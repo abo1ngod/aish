@@ -279,39 +279,74 @@
         bgColorInput.addEventListener('input', (e) => container.style.backgroundColor = e.target.value);
 
         // === التمرير البطيء (Friction) ===
+        // تم إعادة كتابة هذا الجزء بالكامل لحل مشكلة الآيفون
+        
         let isDragging = false;
         let startY;
         let scrollTop;
-        const FRICTION_FACTOR = 2.5; // سرعة ثابتة وبطيئة كما طلبت
-        let isFrictionEnabled = true;
-
-        function updateFrictionState() {
-            isFrictionEnabled = frictionToggle.checked;
-            document.body.style.touchAction = isFrictionEnabled ? 'none' : 'auto';
-        }
-        frictionToggle.addEventListener('change', updateFrictionState);
-        updateFrictionState();
-
-        document.addEventListener('touchstart', (e) => {
-            if (!isFrictionEnabled) return;
+        const FRICTION_FACTOR = 2.5; 
+        
+        // دوال اللمس معرفة كأسماء لإمكانية إزالتها (مهم جداً للآيفون)
+        function onTouchStart(e) {
             if (e.target.closest('#controls-panel') || e.target.closest('#settings-toggle') || e.target.closest('#editor-modal')) return;
             
             isDragging = true;
             startY = e.touches[0].pageY;
             scrollTop = window.scrollY;
-        }, { passive: false });
+        }
 
-        document.addEventListener('touchmove', (e) => {
-            if (!isFrictionEnabled || !isDragging) return;
+        function onTouchMove(e) {
+            if (!isDragging) return;
             if (e.target.closest('#controls-panel') || e.target.closest('#editor-modal')) return;
             
-            e.preventDefault();
+            // هذا السطر هو الذي يسبب توقف التمرير الطبيعي، لذا يجب إزالة المستمع بالكامل عند الإيقاف
+            e.preventDefault(); 
             const y = e.touches[0].pageY;
             const walk = (startY - y) / FRICTION_FACTOR;
             window.scrollTo(0, scrollTop + walk);
-        }, { passive: false });
+        }
 
-        document.addEventListener('touchend', () => { isDragging = false; });
+        function onTouchEnd() {
+            isDragging = false;
+        }
+
+        // دالة التبديل
+        function updateFrictionState() {
+            const isEnabled = frictionToggle.checked;
+            
+            if (isEnabled) {
+                // تفعيل التمرير البطيء
+                document.body.style.touchAction = 'none';
+                document.body.style.overscrollBehaviorY = 'none';
+                
+                // إضافة المستمعات (Non-passive)
+                document.addEventListener('touchstart', onTouchStart, { passive: false });
+                document.addEventListener('touchmove', onTouchMove, { passive: false });
+                document.addEventListener('touchend', onTouchEnd);
+            } else {
+                // العودة للوضع الطبيعي (مهم: إزالة المستمعات)
+                document.body.style.touchAction = 'auto';
+                document.body.style.overscrollBehaviorY = 'auto';
+                
+                // إزالة المستمعات بالكامل لتحرير المتصفح
+                document.removeEventListener('touchstart', onTouchStart, { passive: false });
+                document.removeEventListener('touchmove', onTouchMove, { passive: false });
+                document.removeEventListener('touchend', onTouchEnd);
+                
+                isDragging = false;
+            }
+        }
+
+        frictionToggle.addEventListener('change', updateFrictionState);
+        
+        // تفعيل الحالة الأولية
+        updateFrictionState();
+
+        // مستمع دائم (Passive) لإيقاف أي تمرير تلقائي عند اللمس في أي وضع
+        document.addEventListener('touchstart', () => {
+            // لا يوجد كود هنا حالياً للتمرير التلقائي، لكنه مفيد للمستقبل أو لإغلاق القوائم
+        }, { passive: true });
+
     </script>
 </body>
 </html>
