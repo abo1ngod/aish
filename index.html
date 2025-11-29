@@ -77,7 +77,7 @@
         input:checked + .slider-mini { background-color: #3b82f6; }
         input:checked + .slider-mini:before { transform: translateX(12px); }
 
-        /* منطقة "اعرض محاضرتك هنا" */
+        /* منطقة "اعرض خطبتك هنا" */
         .placeholder-box {
             border: 2px dashed #cbd5e1;
             transition: all 0.3s ease;
@@ -198,7 +198,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                         </svg>
                     </div>
-                    <span class="text-lg font-bold text-gray-600 group-hover:text-blue-600">اعرض محاضرتك هنا</span>
+                    <span class="text-lg font-bold text-gray-600 group-hover:text-blue-600">اعرض خطبتك هنا</span>
                 </div>
             </div>
             
@@ -224,7 +224,7 @@
         // === المحرر ===
         function openEditor() {
             const currentText = textContent.innerText;
-            textInput.value = currentText.includes("اعرض محاضرتك هنا") ? "" : currentText.trim();
+            textInput.value = currentText.includes("اعرض خطبتك هنا") ? "" : currentText.trim();
             editorModal.classList.remove('hidden');
             setTimeout(() => {
                 editorContent.classList.remove('scale-95', 'opacity-0');
