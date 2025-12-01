@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>قارئ النص العربي</title>
     <!-- استيراد خطوط عربية مميزة -->
+        <!-- اصدار ااظهر 1:30 -->
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;700&family=Tajawal:wght@400;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -153,9 +154,9 @@
 
                 <div class="flex items-center justify-between bg-gray-50 rounded border border-gray-200 px-2 h-9">
                     <span class="text-xs text-gray-600 font-medium">اللمس البطيء</span>
-                    <!-- زر التبديل المصغر فقط -->
+                    <!-- زر التبديل المصغر فقط - تم إزالة checked ليكون معطلاً افتراضياً -->
                     <label class="switch-mini" title="تفعيل اللمس البطيء">
-                        <input type="checkbox" id="frictionToggle" checked>
+                        <input type="checkbox" id="frictionToggle">
                         <span class="slider-mini"></span>
                     </label>
                 </div>
@@ -350,3 +351,4 @@
     </script>
 </body>
 </html>
+
